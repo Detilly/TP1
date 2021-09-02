@@ -1,11 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const Logger = require('./logger');
-let monJournal = new Logger( );
-
-monJournal.on('avertissement', (data) => eventAvertissement(data));
-monJournal.on('information', (data) => eventInformation(data));
-monJournal.on('erreur', (data) => eventErreur(data));
 
 function eventAvertissement(data) {
     fs.appendFile(
@@ -16,6 +11,8 @@ function eventAvertissement(data) {
                 }
         
     )
+
+    console.log(`avertissement: { \n    id: '${data.id}', \n    temps: '${data.temps}' \n    message: '${data.message}' \n    usager: '${data.usager}' \n }`)
 }
 
 function eventErreur(data) {
@@ -27,6 +24,8 @@ function eventErreur(data) {
                 }
         
     )
+
+    console.log(`erreur: { \n    id: '${data.id}', \n    temps: '${data.temps}' \n    erreur: '${data.erreur}' \n    usager: '${data.usager}' \n }`)
 }
 
 function eventInformation(data) {
@@ -38,7 +37,15 @@ function eventInformation(data) {
                 }
         
     )
+
+    console.log(`information: { \n    id: '${data.id}', \n    temps: '${data.temps}' \n    info: '${data.info}' \n    usager: '${data.usager}' \n }`)
 }
+
+let monJournal = new Logger();
+
+monJournal.on('avertissement', (data) => eventAvertissement(data));
+monJournal.on('information', (data) => eventInformation(data));
+monJournal.on('erreur', (data) => eventErreur(data));
 
 monJournal.log('joseph', 'Salut');
 monJournal.error('bob', 'voici l erreur');
